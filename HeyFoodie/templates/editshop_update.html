@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="storeinfo">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="shopname" class="col-sm-3 col-form-label">ชื่อร้าน</label>
+                    <div class="col-sm-7">
+                        {{form.storename}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="shopname" class="col-sm-3 col-form-label">วันที่เปิดร้าน</label>
+                    <div class="col-sm-7">
+                        {{form.open_day}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="storeTime" class="col-sm-3 col-form-label">เวลาเปิด-ปิดร้าน</label>
+                    <label for="openStore" class="col-sm-1 col-form-label">เปิด</label>
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                            {{form.open_time}}
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker1').datetimepicker({
+                                format: 'HH:mm:ss'
+                            });
+                        });
+                    </script>
+                    
+                    <label for="closeStore" class="col-sm-1 col-form-label">ปิด</label>
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            {{form.close_time}}
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker2').datetimepicker({
+                                format: 'HH:mm:ss'
+                            });
+                        });
+                    </script>
+                </div>    
+
+                <div class="form-group row">
+                    <label for="orderTime" class="col-sm-3 col-form-label">เวลาเปิด-ปิดรับออเดอร์</label>
+                    <label for="openOrder" class="col-sm-1 col-form-label">เปิด</label>
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                            {{form.open_order}}
+                            <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker3').datetimepicker({
+                                format: 'HH:mm:ss'
+                            });
+                        });
+                    </script>
+
+                    <label for="closeOrder" class="col-sm-1 col-form-label">ปิด</label>
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                            {{form.close_order}}
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker4').datetimepicker({
+                                format: 'HH:mm:ss'
+                            });
+                        });
+                    </script>
+                </div>
+                <div class="form-group row">
+                    <label for="shopname" class="col-sm-3 col-form-label">คำโปรยของร้าน</label>
+                    <div class="col-sm-7">
+                        {{form.detail}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="shopname" class="col-sm-3 col-form-label">ติดต่อ</label>
+                    <div class="text col-sm-1">อีเมล </div>
+                    <div class="text col-sm-4"> 
+                        {{form.email}}
+                    </div>
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-3"></div>
+                    <div class="text col-sm-1">FB: </div>
+                    <div class="text col-sm-3"> 
+                        {{form.fbpage}}
+                    </div>
+                    <div class="text col-sm-1">LINE: </div>
+                    <div class="text col-sm-3"> 
+                        {{form.lineac}}
+                    </div>
+                    <br />
+                    <div class="col-sm-3"></div>
+                  
+                    <div class="text col-sm-1">IG:</div>
+                    <div class="text col-sm-3"> 
+                        {{form.igac}}
+                    </div>
+                    <div class="text col-sm-1">Tel: </div>
+                    <div class="text col-sm-3"> 
+                        {{form.phone}}
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label for="shopname" class="col-sm-3 col-form-label">ที่อยู่ของร้าน</label>
+                    <div class="col-sm-7">
+                        {{form.address}}
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="vertical-center">
+                        <div class="row">
+                        <div class="col-sm-6"><a type="button" class="btn btn-outline-warning btn-lg" href="{% url 'editshop' %}">ยกเลิก</a></div>
+                            <div class="col-sm-6"><button type="submit" class="btn btn-outline-warning btn-lg">ยืนยัน</button></div>
+                        </div>
+        
+                    </div>
+                </div>
+            </form>
+            <div>
+                {% if messages %}
+                <br/>
+                {% for message in messages %}
+                    <p style="color: red;">เกิดข้อผิดพลาด! กรุณากรอกข้อมูลให้ถูกต้องครบถ้วน</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            
+        </div>
+        
+
+    </div>
+</div>
+{% endblock content %}

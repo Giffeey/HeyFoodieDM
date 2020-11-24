@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h2>
+            ข้อมูลส่วนตัว
+        </h2>
+
+        <div class="imgowner">
+            <img src="/media/Image/user_shop.png" alt="user_shop" />
+        </div>
+        
+        <div class="infoowner">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">ชื่อ</label>
+                        <div class="col-sm-3">
+                            {{ form.first_name}}
+                        </div>
+                        <label for="email" class="col-sm-2 col-form-label">นามสกุล</label>
+                        <div class="col-sm-3">
+                            {{ form.last_name}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">อีเมล</label>
+                        <div class="col-sm-8">
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label">รหัสผ่าน</label>
+                        <div class="text col-sm-3">
+                            ********************
+                        </div>
+                        <div class="text col-sm-3">
+                            <a href="{% url 'change_password' %}" >เปลี่ยนรหัสผ่าน</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container btn">
+                    <div class="vertical-center">
+                            <div class="row">
+                                <div class="col-sm-6"><a type="button" class="btn btn-outline-warning btn-lg" href="{% url 'editprofile' %}">ยกเลิก</a></div>
+                                <div class="col-sm-6"><button type="submit" class="btn btn-outline-warning btn-lg">ยืนยัน</button></div>
+                            </div>
+                    </div>
+                </div>
+                
+                <div>
+                    {% if messages %}
+                    <br/>
+                    {% for message in messages %}
+                        <p style="color: red;">เกิดข้อผิดพลาด! กรุณากรอกข้อมูลให้ถูกต้องครบถ้วน</p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

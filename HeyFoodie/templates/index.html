@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% block content %}
+    <!--/col-->
+
+        <h1 class="display-5 d-none d-sm-block">
+        {{store.storename}} Dashboard
+        </h1>
+        <p class="lead mt-5"></p>
+        <p class="lead d-none d-sm-block">{{date.day}} 
+            {% if date.month == 1 %}
+                มกราคม
+            {% elif date.month == 2 %}
+                กุมภาพันธ์
+            {% elif date.month == 3 %}
+                มีนาคม
+            {% elif date.month == 4 %}
+                เมษายน
+            {% elif date.month == 5 %}
+                พฤษภาคม
+            {% elif date.month == 6 %}
+                กรกฎาคม
+            {% elif date.month == 7 %}
+                มิถุนายน
+            {% elif date.month == 8 %}
+                สิงหาคม
+            {% elif date.month == 9 %}
+                กันยายน
+            {% elif date.month == 10 %}
+                ตุลาคม
+            {% elif date.month == 11 %}
+                พฤศจิกายน
+            {% elif date.month == 12 %}
+                ธันวาคม
+            {% endif %}
+
+            {{date.year}}</p>
+
+        <div class="alert alert-warning fade collapse" role="alert" id="myAlert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>Holy guacamole!</strong> It's free.. this is an example theme.
+        </div>
+        <div class="row mb-3">
+            <div class="col-xl-3 col-sm-6 py-2">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body bg-info">
+                        <div class="rotate">
+                            <i class="fa fa-list fa-4x"></i>
+                        </div>
+                        <h6 class="text-uppercase">ออเดอร์ในวันนี้</h6>
+                   
+                        <h1 class="display-5">{{countOrd}}</h1>
+                 
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 py-2">
+                <div class="card text-white bg-warning h-100">
+                    <div class="card-body bg-warning">
+                        <div class="rotate">
+                            <i class="fa fa-clock-o fa-4x"></i>
+                        </div>
+                        <h6 class="text-uppercase">ออเดอร์รอส่งมอบ</h6>
+                        <h1 class="display-5">{{countPickOrd}} </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 py-2">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-body">
+                        <div class="rotate">
+                            <i class="fa fa-check-circle fa-4x"></i>
+                        </div>
+                        <h6 class="text-uppercase">ออเดอร์เสร็จสมบูรณ์</h6>
+                        <h1 class="display-5">{{countComOrd}}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 py-2">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body bg-success">
+                        <div class="rotate">
+                            <i class="fa fa-dollar fa-4x"></i>
+                        </div>
+                        <h6 class="text-uppercase">รายได้ในวันนี้</h6>
+                        <h1 class="display-5">
+                            {% if income.amount__sum == None %}
+                                0
+                            {% else %}
+                                {{income.amount__sum}}
+                            {% endif %}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="lead mt-5"></p>
+        <!--/row-->
+
+        <hr>
+        <p class="lead mt-5">
+            <b>เมนูยอดนิยม</b>
+        </p>
+        <br/>
+        <div class="row placeholders mb-3 justify-content-center">
+            <div class="container d-flex flex-column" style="width: 80%; height: 600px;">
+                    <div class="card card-default card-body">
+                        <ul id="tabsJustified" class="nav nav-tabs nav-justified">
+                            <li class="nav-item" >
+                                <a class="nav-link active" href="#tab1"  data-toggle="tab">วันนี้</a>
+                            </li>
+                            <li class="nav-item"  >
+                                <a class="nav-link" href="#tab2" data-toggle="tab">สัปดาห์นี้</a>
+                            </li>
+                            <li class="nav-item" >
+                                <a class="nav-link" href="#tab3" data-toggle="tab">เดือนนี้</a>
+                            </li>
+                        </ul>
+                        <!--/tabs-->
+                        <br>
+                        <div id="tabsJustifiedContent" class="tab-content">
+                            <div class="tab-pane active" id="tab1">
+                                {% if countOrd != 0 %}  
+                                <div class="row my-2">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                              
+                                                <canvas id="chBar" data-url="{% url 'bestsellmenuday' %}"></canvas>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                    <div class="container">
+                                        <div class="row justify-content-center align-items-center" style="height: 400px;">
+                                            <div class="col text-center justify-content-center">
+                                            <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+                                            <br />
+                                            <div>ยังไม่มีออเดอร์เข้ามาในวันนี้</div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane" id="tab2">
+                                {% if countOrdWk != 0 %}
+                                <div class="row my-2">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div><canvas id="chBarWeek" data-url="{% url 'bestsellmenuweek' %}"></canvas></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="container">
+                                    <div class="row justify-content-center align-items-center" style="height: 400px;">
+                                        <div class="col text-center justify-content-center">
+                                        <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+                                        <br />
+                                        <div>ยังไม่มีออเดอร์เข้ามาในสัปดาห์นี้</div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane" id="tab3">
+                                {% if countOrdM != 0 %}
+                                <div class="row my-2">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <canvas id="chBarMonth" data-url="{% url 'bestsellmenumonth' %}"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="container">
+                                    <div class="row justify-content-center align-items-center" style="height: 400px;">
+                                        <div class="col text-center justify-content-center">
+                                        <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+                                        <br />
+                                        <div>ยังไม่มีออเดอร์เข้ามาในเดือนนี้</div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!--/tabs content-->
+                    </div><!--/card-->
+
+              
+            </div>
+        </div>
+        
+
+
+     
+        <p class="lead mt-5"></p>
+
+        <a id="features"></a>
+        <hr>
+        <p class="lead mt-5">
+            <b>รายการออเดอร์ล่าสุดของวันนี้</b>
+        </p>
+        <div class="row my-4 justify-content-center">
+            <div class="col-lg-9 col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Status</th>
+                                <th>Date & Time</th>
+                                <th>Customer</th>
+                            </tr>
+                        </thead>
+                        {% for order in order %}
+                        <tbody>
+                            <tr>
+                                <td>{{order.order_id}}</td>
+                                {% if order.order_status == "WAITING" %}
+                                <td>ออเดอร์เข้าใหม่</td>
+                                {% elif order.order_status == "COOKING" %}
+                                <td>กำลังปรุงอาหาร</td>
+                                {% elif order.order_status == "READYTOPICKUP" %}
+                                <td>รอส่งมอบอาหาร</td>
+                                {% elif order.order_status == "DONE" %}
+                                <td>ชำระเงินและรับสินค้าแล้ว</td>
+                                {% elif order.order_status == "CANCEL" %}
+                                <td>ยกเลิกออเดอร์</td>
+                                {% endif %}
+                                <td>{{order.date}}</td>
+                                <td>{{order.customer.firstname}} {{order.customer.lastname}}</td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/row-->
+
+        
+
+        
+          
+
+    <!--/main col-->
+    <script>
+          $(document).ready(function () {
+          
+          var $bestsellmenu = $("#chBar");
+          $.ajax({
+            url: $bestsellmenu.data("url"),
+            success: function (data) {
+      
+              var ctx = $bestsellmenu[0];
+              Chart.defaults.global.defaultFontFamily = 'Kanit';
+          if(ctx){
+              new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: data.labels,
+                  datasets: [{
+                    label: 'จำนวนครั้งที่สั่ง',
+                    backgroundColor: '#87bed3',
+                    data: data.data
+                  }]          
+                },
+                options: {
+                  responsive: true,
+                  legend: {
+                    position: 'top'
+                  },
+                  title: {
+                    display: true,
+                    text: 'กราฟแสดงเมนูที่ขายได้ในวันนี้',
+                    fontSize: 18
+                  },
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 18,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }
+                      }],
+                      xAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 14,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }           
+                      }]
+                  }
+                }
+              });
+              }
+            }
+          });
+          
+        });
+      
+        $(document).ready(function () {
+                
+          var $bestsellmenu = $("#chBarWeek");
+          $.ajax({
+            url: $bestsellmenu.data("url"),
+            success: function (data) {
+      
+              var ctx = $bestsellmenu[0];
+              Chart.defaults.global.defaultFontFamily = 'Kanit';
+          
+              var bsm = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: data.labels,
+                  datasets: [{
+                    label: 'จำนวนครั้งที่สั่ง',
+                    backgroundColor: '#cd8dcd',
+                    data: data.data
+                  }]          
+                },
+                options: {
+                  responsive: true,
+                  legend: {
+                    position: 'top'
+                  },
+                  title: {
+                    display: true,
+                    text: 'กราฟแสดงเมนูที่ขายได้ในสัปดาห์นี้',
+                    fontSize: 18
+                  },
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 18,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }
+                      }],
+                      xAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 14,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }           
+                      }]
+                  }
+                }
+              });
+              }
+            
+          });
+          
+        });
+      
+        $(document).ready(function () {
+                
+          var $bestsellmenu = $("#chBarMonth");
+          $.ajax({
+            url: $bestsellmenu.data("url"),
+            success: function (data) {
+      
+              var ctx = $bestsellmenu[0];
+              Chart.defaults.global.defaultFontFamily = 'Kanit';
+      
+              var bsmm = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: data.labels,
+                  datasets: [{
+                    label: 'จำนวนครั้งที่สั่ง',
+                    backgroundColor: '#eb5640',
+                    data: data.data
+                  }]          
+                },
+                options: {
+                  responsive: true,
+                  legend: {
+                    position: 'top'
+                  },
+                  title: {
+                    display: true,
+                    text: 'กราฟแสดงเมนูที่ขายได้ในเดือนนี้',
+                    fontSize: 18
+                  },
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 18,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }
+                      }],
+                      xAxes: [{
+                          ticks: {
+                              fontColor: "black",
+                              fontSize: 14,
+                              stepSize: 1,
+                              beginAtZero: true
+                          }           
+                      }]
+                  }
+                }
+              });
+              }
+            
+          });
+          
+        });
+    </script>
+
+{% endblock content %}

@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block content %}
+{% if ordToday != 0 %}
+{% if countOrdNow == 0 %}
+<div class="container">
+  <div class="row justify-content-center align-items-center" style="height: 400px;">
+      <div class="col text-center justify-content-center">
+      <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+      <br />
+      <div>ยังไม่มีออเดอร์เข้ามาในตอนนี้</div>
+      </div>
+  </div>  
+</div>
+{% endif %}
+{% for order in orders %}
+{% if order != null %}
+<div class="card-order">
+    <div class="card">
+        <div class="card-body">
+            <div class="order row">
+                <div class="col">
+                    Order ID {{order.order_id}}
+                </div>
+                <div class="col">
+                    {{order.date}}
+                </div>
+            </div>
+            <div class="order row"  style="margin-top: 10px;">
+                <div class="status col">
+                    {% if order.order_status == 'WAITING' %}
+                    <span id="new" style="color: #007AFF;">NEW ORDER</span>
+                    {% elif order.order_status == 'COOKING' %}
+                    <span id="cook" style="color: #FFC04D;">COOKING</span>
+                    {% elif order.order_status == 'READYTOPICKUP' %}
+                    <span id="ready" style="color: #43A047;">READY TO PICKUP</span>
+                    {% elif order.order_status == 'DONE' %}
+                    <span id="done">COMPLETE</span>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <span id="view" onclick="toggle_visibility('od{{order.order_id}}')">View Detail
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </span>
+                </div>
+                <!-- <div class="col-sm-12"><hr /></div> -->
+            </div>
+            <div id="od{{order.order_id}}" class="showDetail" style="display: none; margin-bottom: 45px;">
+                <div class="col-sm-12"><br /><hr /></div>
+                <div class="container">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-sm-3">เมนู</div>
+                        <div class="col-sm-3">จำนวน</div>
+                        <div class="col">ราคา</div>
+                    </div>
+                    {% for detail in od %}
+                    {% if detail.order.order_id == order.order_id %}
+                    <div class="row" >
+                        <div class="col-sm-3">{{detail.menu}} ({{detail.size.size}})</div>
+                        <div class="col-sm-3">x {{detail.quantity}}</div>
+                        <div class="col">{{detail.size.price}} ฿</div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for payment in pm %}
+                    {% if payment.order.order_id == order.order_id %}
+                    <div class="row justify-content-end" style="margin-top: 20px;">
+                        
+                        {% if payment.method == 'CASH' %}
+                            <div class="col-sm-6">ชำระด้วย เงินสด</div>
+                        {% else %}
+                            <div class="col-sm-6">ชำระด้วย บัตรเครดิต/เดบิต</div>
+                        {% endif %}
+
+                    </div>
+                    <div class="col-sm-12"></div>
+                    <div class="row justify-content-end" style="margin-top: 10px;">
+                        <div class="col-sm-3 justify-content-start">รวม</div>
+                        <div class="col-sm-6">{{payment.amount}} ฿</div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    <div class="row justify-content-end">
+                        
+                        <div class="btnConfirm col-sm-6">
+                            <br/>
+                            <div class="row">
+                                {% if order.order_status == 'WAITING' %}
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal{{order.order_id}}">ยกเลิกออเดอร์</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <form action="{% url 'changeStatus' pk=order.order_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-warning">รับออเดอร์</button>
+                                </form>
+                                </div>
+                            </div>
+                            
+                            {% elif order.order_status == 'COOKING' %}
+                            <form action="{% url 'changeStatus' pk=order.order_id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-warning">อาหารพร้อมเสิร์ฟแล้ว</button>
+                            </form>
+                            {% elif order.order_status == 'READYTOPICKUP' %}
+                            <form action="{% url 'changeStatus' pk=order.order_id %}" method="POST">
+                                 {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-warning">ชำระเงินและรับสินค้าแล้ว</button>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                        <div class="modal fade" id="exampleModal{{order.order_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  คุณต้องการยกเลิก "ORDER {{order.order_id}}" ใช่หรือไม่
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                  <form action="{% url 'cancelOrder' pk=order.order_id %}" method="POST">
+                                    {% csrf_token %}
+                                  <button type="submit" class="btn btn-primary">ใช่ ฉันต้องการยกเลิก</button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                function toggle_visibility(id) {
+                    var e = document.getElementById(id);
+                        if(e.style.display === 'none'){
+                            e.style.display = 'block';
+                        }else{
+                            e.style.display = 'none';
+                        }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+<div class="container" style="margin-top: 30px;">
+    <div class="row justify-content-center">
+      {% if orders.has_other_pages %}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if orders.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ menu.previous_page_number }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+            </li>
+          {% endif %}
+          {% for i in orders.paginator.page_range %}
+            {% if menu.number == i %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link"> {{ i }} <span class="sr-only">(current)</span></a>
+              </li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if orders.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ menu.next_page_number }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+  </div>
+</div>
+</div>
+{% else %}
+<div class="container">
+  <div class="row justify-content-center align-items-center" style="height: 400px;">
+      <div class="col text-center justify-content-center">
+      <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+      <br />
+      <div>ยังไม่มีออเดอร์เข้ามาในวันนี้</div>
+      </div>
+  </div>  
+</div>
+{% endif %}
+{% endblock content %}
