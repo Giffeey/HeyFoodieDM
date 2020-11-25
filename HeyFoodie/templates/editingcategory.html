@@ -6,7 +6,7 @@
                 <h4>จัดการหมวดหมู่ส่วนผสม</h4>
             </div>
             <div class="col-4" style="margin-left: 160px;">
-                <a class="btn btn-warning" type="submit" data-toggle="modal" data-target="#createModal"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <a class="btn btn-outline-warning" type="submit" data-toggle="modal" data-target="#createModal"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg> เพิ่มหมวดหมู่ส่วนผสม </a>
             </div>
@@ -22,6 +22,33 @@
           {% endif %}
         </div>
 
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form action="{% url 'editingcategory_create' %}" method="POST"> 
+                {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">เพิ่มหมวดหมู่ส่วนผสม</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <div class="row">
+                      <div class="col-sm-5">ชื่อหมวดหมู่ส่วนผสม:</div>
+                      <div class="col-sm-3">{{form.name}}</div>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-warning">บันทึก</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        {% if ingcategory != NULL %}
 
             <div class="row head" style="margin-top: 30px;">
                 <div class="col-sm-4" style="text-align: center; margin-left: 160px">รายการหมวดหมู่ส่วนผสม</div>
@@ -35,32 +62,6 @@
                         <div class="col-sm-2"><a href="" data-toggle="modal" data-target="#editModal{{cat.ingredient_category_id}}"><img src="/media/Image/icon/edit.png" alt="edit" width="20px" height="20px"></a></a></div>
                         <div class="col-sm-2"><a href="" data-toggle="modal" data-target="#delModal{{cat.ingredient_category_id}}"><img src="/media/Image/icon/bin.png" alt="delete" width="20px" height="20px"></a></a></div>
                     </div>
-                </div>
-
-                <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <form action="{% url 'editingcategory_create' %}" method="POST"> 
-                        {% csrf_token %}
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มหมวดหมู่ส่วนผสม</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                            <div class="row">
-                              <div class="col-sm-5">ชื่อหมวดหมู่ส่วนผสม:</div>
-                              <div class="col-sm-3">{{form.name}}</div>
-                            </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
-                      </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="modal fade" id="editModal{{cat.ingredient_category_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -82,7 +83,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        <button type="submit" class="btn btn-warning">บันทึก</button>
                       </div>
                       </form>
                     </div>
@@ -150,7 +151,17 @@
                     {% endif %}
                     </div>
                 </div>
-            
+        {% else %}
+        <div class="container">
+          <div class="row justify-content-center align-items-center" style="height: 400px;">
+              <div class="col text-center justify-content-center">
+              <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+              <br />
+              <div>ยังไม่มีข้อมูล กรุณาเพิ่มที่ปุ่มขวาบน</div>
+              </div>
+          </div>  
+        </div>
+        {% endif %}
     </div>
 {% endblock content %}
 

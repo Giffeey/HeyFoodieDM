@@ -35,13 +35,7 @@
 
             {{date.year}}</p>
 
-        <div class="alert alert-warning fade collapse" role="alert" id="myAlert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-                <span class="sr-only">Close</span>
-            </button>
-            <strong>Holy guacamole!</strong> It's free.. this is an example theme.
-        </div>
+
         <div class="row mb-3">
             <div class="col-xl-3 col-sm-6 py-2">
                 <div class="card bg-info text-white h-100">
@@ -212,6 +206,7 @@
         </p>
         <div class="row my-4 justify-content-center">
             <div class="col-lg-9 col-md-8">
+                {% if countOrd != 0 %}
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead class="thead-inverse">
@@ -244,14 +239,20 @@
                         {% endfor %}
                     </table>
                 </div>
+                {% else %}
+                <div class="container">
+                    <div class="row justify-content-center align-items-center" style="height: 400px;">
+                        <div class="col text-center justify-content-center">
+                        <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+                        <br />
+                        <div>ยังไม่มีออเดอร์เข้ามาในวันนี้</div>
+                        </div>
+                    </div>  
+                </div>
+                {% endif %}
             </div>
         </div>
-        <!--/row-->
-
-        
-
-        
-          
+        <!--/row-->    
 
     <!--/main col-->
     <script>

@@ -78,23 +78,6 @@ import logging
 from rest_framework import status
 
 
-
-def homeTest(request):
-    try:
-        return render(request, "index.html")
-        # return render(request, index_file_path)
-    except FileNotFoundError:
-        logging.exception('Production build of app not found')
-        return HttpResponse(
-            status=501,
-        )
-    
-
-
-
-
-
-
 @login_required
 def home(request):
     store = get_object_or_404(Store, pk=1)
@@ -108,8 +91,8 @@ def home(request):
     countOrd = Order.objects.filter(date__gte=datetime.now().date())
     countOrdWk = Order.objects.filter(
         date__gte=datetime.today() - timedelta(days=datetime.today().weekday())
-    )
-    countOrdM = Order.objects.filter(date__range=(start_date, end_date))
+    ).count()
+    countOrdM = Order.objects.filter(date__range=(start_date, end_date)).count()
     countAllOrd = countOrd.filter(
         Q(order_status="COOKING")
         | Q(order_status="WAITING")
@@ -889,6 +872,7 @@ def createIngredient(request):
 def createIngCategory(request):
     if request.method == "POST":
         form = IngredientCategoryForm(request.POST)
+        print(form)
         if form.is_valid():
             form.cleaned_data
             form.save()

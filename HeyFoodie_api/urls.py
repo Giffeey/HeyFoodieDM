@@ -30,9 +30,7 @@ urlpatterns = [
     
     # path('', views.home, name='home'),
     
-    path('', views.homeTest, name='home'),
-
-
+    path('', views.home, name='home'),
     path('home/', views.home, name='home'),
     path('editprofile/', views.editProfile, name='editprofile'),
     path('editprofile/update/', views.editProfile_update, name='editprofile_update'),
@@ -43,14 +41,16 @@ urlpatterns = [
     path('editmenu/create/', views.editmenu_create, name='editmenu_create'),
     path('editmenu/<int:pk>/update/', views.editmenu_update, name='editmenu_update'),
     path('editmenu/<int:pk>/delete/', views.editmenu_delete, name='editmenu_delete'),
+    
     path('createcategory/', views.createCategory, name='createCategory'),
     path('createsalesize/', views.createSalesize, name='createSalesize'),
     path('createIngredient/', views.createIngredient, name='createIngredient'),
+    path('createingcategory/', views.createIngCategory, name='createIngCategory'),
+
     path('editingredient/', views.editingredient, name='editingredient'),
     path('editingredient/create/', views.editingredient_create, name='editingredient_create'),
-    path('editingredient/create/', views.createIngCategory, name='createIngCategory'),
     path('editingredient/<int:pk>/update/', views.editingredient_update, name='editingredient_update'),
-    path('createingcategory/', views.createIngCategory, name='ingupd_createIngCategory'),
+
     path('editingredient/<int:pk>/delete/', views.editingredient_delete, name='editingredient_delete'),
     path('editcategory/', views.editcategory, name='editcategory'),
     path('editcategory/create', views.editcategory_create, name='editcategory_create'),

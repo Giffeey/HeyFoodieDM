@@ -27,9 +27,9 @@ class Store(models.Model):
     open_day = MultiSelectField(choices=Day, max_choices=7, max_length=20, null=False)
     email = models.CharField(max_length=30)
     phone = models.CharField(max_length=10)
-    fbpage = models.CharField(max_length=100, null=True)
-    lineac = models.CharField(max_length=100, null=True)
-    igac = models.CharField(max_length=100, null=True)
+    fbpage = models.CharField(max_length=100, null=True, blank=True)
+    lineac = models.CharField(max_length=100, null=True, blank=True)
+    igac = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=300)
 
     def __str__(self):

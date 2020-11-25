@@ -7,7 +7,7 @@
             </div>
             <div class="col-3">
               <form action="{% url 'editingredient_create' %}">
-                <button class="btn btn-warning" type="submit"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <button class="btn btn-outline-warning" type="submit"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg> เพิ่มส่วนผสม </button>
               </form>
@@ -23,7 +23,8 @@
           {% endfor %}
           {% endif %}
         </div>
-
+        
+        {% if ingredients != NULL %}
         <div class="row head" style="margin: 30px;">
             <div class="col-sm-3" style="text-align: center;">รูปภาพ</div>
             <div class="col-sm-3" style="text-align: center;">ชื่อส่วนผสม</div>
@@ -61,7 +62,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                 <form action="{% url 'editingredient_delete' pk=ingredient.ingredient_id %}" method="POST">
                   {% csrf_token %}
-                <button type="submit" class="btn btn-primary">ใช่ ฉันต้องการลบ</button>
+                <button type="submit" class="btn btn-warning">ใช่ ฉันต้องการลบ</button>
                 </form>
               </div>
             </div>
@@ -106,6 +107,17 @@
                 {% endif %}
             </div>
         </div>
+      {% else %}
+      <div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 400px;">
+            <div class="col text-center justify-content-center">
+            <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+            <br />
+            <div>ยังไม่มีข้อมูล กรุณาเพิ่มที่ปุ่มขวาบน</div>
+            </div>
+        </div>  
+      </div>
+      {% endif %}
     </div>
 
 {% endblock content %}

@@ -7,7 +7,7 @@
                 <h4>จัดการขนาดและราคา</h4>
             </div>
             <div class="col-3" style="margin-left: 200px;">
-                <a class="btn btn-warning" type="submit" data-toggle="modal" data-target="#createModal"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <a class="btn btn-outline-warning" type="submit" data-toggle="modal" data-target="#createModal"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg> เพิ่มขนาดและราคา</a>
             </div>
@@ -23,6 +23,38 @@
             {% endif %}
         </div>
 
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <form action="{% url 'editsalesize_create' %}" method="POST"> 
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">เพิ่มขนาดและราคา</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-2">ขนาด:</div>
+                    <div class="col-sm-3">{{form.size}}</div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-2">ราคา:</div>
+                    <div class="col-sm-3">{{form.price}}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-warning">บันทึก</button>
+            </div>
+            </form>
+            </div>
+            </div>
+        </div>
+        
+        {% if salesize != NULL %}
             <div class="row head" style="margin: 30px; margin-left: 230px;">
                 <div class="col-sm-3" style="text-align: center; margin-left: -15px;">ขนาด</div>
                 <div class="col-sm-2" style="margin-left: -15px;">ราคา</div>
@@ -38,37 +70,6 @@
                         <img src="/media/Image/icon/edit.png" alt="edit" width="20px" height="20px"></a></div>
                     <div class="col-sm-2"><a href="" data-toggle="modal" data-target="#delModal{{s.salesize_id}}">
                         <img src="/media/Image/icon/bin.png" alt="delete" width="20px" height="20px"></a></div>
-                </div>
-            </div>
-        
-            <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                <form action="{% url 'editsalesize_create' %}" method="POST"> 
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มขนาดและราคา</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-2">ขนาด:</div>
-                        <div class="col-sm-3">{{form.size}}</div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-sm-2">ราคา:</div>
-                        <div class="col-sm-3">{{form.price}}</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
-                </div>
-                </form>
-                </div>
                 </div>
             </div>
 
@@ -96,7 +97,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                    <button type="submit" class="btn btn-warning">บันทึก</button>
                 </div>
                 </form>
                 </div>
@@ -119,7 +120,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                     <form action="{% url 'editsalesize_delete' pk=s.salesize_id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">ใช่ ฉันต้องการลบ</button>
+                    <button type="submit" class="btn btn-warning">ใช่ ฉันต้องการลบ</button>
                     </form>
                 </div>
                 </div>
@@ -128,42 +129,55 @@
             {% endfor %}
         
         
-        <div class="container" style="margin-top: 30px;">
-            <div class="row justify-content-center">
-            {% if salesize.has_other_pages %}
-                <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {% if salesize.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ salesize.previous_page_number }}">&laquo;</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
-                    </li>
-                    {% endif %}
-                    {% for i in salesize.paginator.page_range %}
-                    {% if salesize.number == i %}
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link"> {{ i }} <span class="sr-only">(current)</span></a>
-                        </li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                    {% if salesize.has_next %}
+            <div class="container" style="margin-top: 30px;">
+                <div class="row justify-content-center">
+                {% if salesize.has_other_pages %}
+                    <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if salesize.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ salesize.next_page_number }}">&raquo;</a>
+                            <a class="page-link" href="?page={{ salesize.previous_page_number }}">&laquo;</a>
                         </li>
-                    {% else %}
+                        {% else %}
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
                         </li>
-                    {% endif %}
-                </ul>
-                </nav>
-            {% endif %}
+                        {% endif %}
+                        {% for i in salesize.paginator.page_range %}
+                            {% if salesize.number == i %}
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link"> {{ i }} <span class="sr-only">(current)</span></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if salesize.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ salesize.next_page_number }}">&raquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    </nav>
+                {% endif %}
+                </div>
             </div>
+
+        {% else %}
+        <div class="container">
+          <div class="row justify-content-center align-items-center" style="height: 400px;">
+              <div class="col text-center justify-content-center">
+              <div><img src="/media/Image/icon/sad.png" style="width: 100px; height: 100px;"/></div>
+              <br />
+              <div>ยังไม่มีข้อมูล กรุณาเพิ่มที่ปุ่มขวาบน</div>
+              </div>
+          </div>  
         </div>
+        {% endif %}
+
     </div>
 {% endblock content %}
