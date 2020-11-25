@@ -1,1 +1,1 @@
-web: gunicorn HeyFoodie_api.wsgi --log-file -
+web: gunicorn --pythonpath backend HeyFoodie_api HeyFoodie_api HeyFoodie_api.wsgi --log-file -
