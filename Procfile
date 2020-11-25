@@ -1,0 +1,1 @@
+web: gunicorn HeyFoodie_api.wsgi --log-file -
