@@ -27,7 +27,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('jsi18n', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', views.home, name='home'),
+    
+    # path('', views.home, name='home'),
+    
+    path('', views.homeTest, name='home'),
+
+
     path('home/', views.home, name='home'),
     path('editprofile/', views.editProfile, name='editprofile'),
     path('editprofile/update/', views.editProfile_update, name='editprofile_update'),

@@ -78,6 +78,23 @@ import logging
 from rest_framework import status
 
 
+
+def homeTest(request):
+    try:
+        return render(request, "index.html")
+        # return render(request, index_file_path)
+    except FileNotFoundError:
+        logging.exception('Production build of app not found')
+        return HttpResponse(
+            status=501,
+        )
+    
+
+
+
+
+
+
 @login_required
 def home(request):
     store = get_object_or_404(Store, pk=1)
